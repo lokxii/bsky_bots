@@ -76,6 +76,7 @@ def get_stats_on_date(client, actor, target_date):
 
     posts = list(filter(lambda d: d.date == target_date, posts))
     stats = {
+        "sum": len(posts),
         "posts": sum(map(lambda d: d.type == "post", posts)),
         "reposts": sum(map(lambda d: d.type == "repost", posts)),
         "replies": sum(map(lambda d: d.type == "reply", posts)),
@@ -94,8 +95,9 @@ def post_announcement(client, date):
 def post_stats(client, root, parent, actor, stats, date):
     text_builder = client_utils.TextBuilder()
     main_text = (
-        "さんの集計データです！\n"
+        "さんの集計結果です！\n"
         + f" {date}\n\n"
+        + f"総計：{stats['sum']}\n"
         + f"ポスト：{stats['posts']}\n"
         + f"リポスト：{stats['reposts']}\n"
         + f"リプライ：{stats['replies']}"
@@ -136,6 +138,9 @@ def show_stats():
 
     for follower in followers:
         stats = get_stats_on_date(client, follower, target_date)
+        if stats["sum"] == 0:
+            continue
+
         parent = post_stats(client, root, parent, follower, stats, target_date)
 
     return "しゅうけい！"
