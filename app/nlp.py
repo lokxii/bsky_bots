@@ -139,8 +139,7 @@ class Model(object):
             counter = Counter(self.model[key])
             total = sum(counter.values())
             probability = {
-                item: max(count / total, 0.1)
-                for item, count in counter.items()
+                item: max(count / total, 0.1) for item, count in counter.items()
             }
             if total < 1:
                 scaling_factor = 1 / total
@@ -164,7 +163,9 @@ class Model(object):
 
 
 def data_preprocessing(data):
-    rgx = re.compile(r"@([a-zA-Z0-9_\-]+\.)+([a-zA-Z0-9_\-]+)|[（）()「」『』【】]|[a-zA-Z_-]*RT[a-zA-Z_-]*")
+    rgx = re.compile(
+        r"@([a-zA-Z0-9_\-]+\.)+([a-zA-Z0-9_\-]+)|[（）()「」『』【】]|[a-zA-Z_-]*RT[a-zA-Z_-]*"
+    )
 
     def rules(s):
         s1 = re.sub(rgx, "", s)
@@ -289,7 +290,7 @@ def measure_time(task, f, *args, **kwargs):
 #     tokens = tokenizer.tokenize("草生えるまんこバズーカRT")
 #     for token in tokens:
 #         print(token.surface, token.part_of_speech)
-# 
+#
 #     exit(0)
 #     tokens, text_depth, pos_depth = measure_time(
 #         "data processing", data_preprocessing, data
@@ -307,6 +308,6 @@ def measure_time(task, f, *args, **kwargs):
 #             pos_model,
 #         )
 #     print(text)
-# 
-# 
+#
+#
 # main()
