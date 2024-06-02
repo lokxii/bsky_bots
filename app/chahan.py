@@ -13,6 +13,21 @@ feed_uri = (
 )
 
 
+def text_url_removed(post) -> str:
+    facets = post.record.facets
+    if facets is not None:
+        encoded = post.record.text.encode("utf-8")
+        indices = map(
+            lambda x: (x.index.byte_start, x.index.byte_end + 1), facets
+        )
+        slices = list(
+            map(lambda x: encoded[x[0]:x[1]].decode("utf-8"), indices)
+        )
+        for slice in slices:
+            post.record.text = post.record.text.replace(slice, "")
+    return post.record.text
+
+
 def fetch_post(count: int) -> [str]:
     posts = []
     cursor = None
@@ -26,7 +41,7 @@ def fetch_post(count: int) -> [str]:
                 "cursor": cursor,
             }
         )
-        posts += list(map(lambda f: f.post.record.text, res.feed))
+        posts += list(map(lambda f: text_url_removed(f.post), res.feed))
         cursor = res.cursor
 
     return posts
