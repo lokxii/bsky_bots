@@ -17,9 +17,7 @@ def text_url_removed(post) -> str:
     facets = post.record.facets
     if facets is not None:
         encoded = post.record.text.encode("utf-8")
-        indices = map(
-            lambda x: (x.index.byte_start, x.index.byte_end + 1), facets
-        )
+        indices = map(lambda x: (x.index.byte_start, x.index.byte_end), facets)
         slices = list(
             map(lambda x: encoded[x[0]:x[1]].decode("utf-8"), indices)
         )
@@ -63,18 +61,21 @@ def main():
         print("Feed not available")
         sys.exit(1)
 
-    try:
-        posts = fetch_post(100)
-        data, text_depth, pos_depth = nlp.data_preprocessing(posts)
-        text_model, pos_model = nlp.build_models(data, text_depth, pos_depth)
-        text = ""
-        while text.strip() == "":
-            text = nlp.generate_text(text_model, pos_model)
-        print(text, file=sys.stderr)
-        post_text(text)
+    while True:
+        try:
+            posts = fetch_post(100)
+            data, text_depth, pos_depth = nlp.data_preprocessing(posts)
+            text_model, pos_model = nlp.build_models(
+                data, text_depth, pos_depth
+            )
+            text = ""
+            while text.strip() == "":
+                text = nlp.generate_text(text_model, pos_model)
+            print(text, file=sys.stderr)
+            post_text(text)
 
-    except Exception as e:
-        print(e, file=sys.stderr)
+            del posts, text_depth, pos_depth, text_model, pos_model, text
+            return "ちゃあはん！"
 
-    finally:
-        return "ちゃあはん！"
+        except Exception as e:
+            print(e, file=sys.stderr)
