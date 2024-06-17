@@ -3,12 +3,15 @@ from flask import Flask, Blueprint
 from app.chahan import chahan
 from app.shuukei import shuukei
 
+import gc
+
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def home():
+    gc.collect()
     return "Hi"
 
 
