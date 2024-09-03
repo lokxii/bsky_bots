@@ -2,6 +2,7 @@ from atproto import Client, client_utils, models
 from datetime import datetime, timedelta
 from flask import Blueprint
 import os
+import time
 from zoneinfo import ZoneInfo
 
 
@@ -73,6 +74,7 @@ def get_stats_on_date(client, actor, target_date):
         posts.extend(filtered)
         if old_len == len(posts):
             break
+        time.sleep(0.01)
 
     posts = list(filter(lambda d: d.date == target_date, posts))
     stats = {
