@@ -5,7 +5,7 @@ authors = [
     { name = "lokxii", email = "9tin9tin9@gmail.com" }
 ]
 dependencies = [
-    "atproto>=0.0.48",
+    "atproto>=0.0.52",
     "flask==3.0.2",
     "janome==0.5.0",
     "numpy==1.26.0",

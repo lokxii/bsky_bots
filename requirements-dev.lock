@@ -13,7 +13,7 @@ annotated-types==0.7.0
     # via pydantic
 anyio==4.4.0
     # via httpx
-atproto==0.0.48
+atproto==0.0.52
     # via bsky-bots
 black==24.2.0
 blinker==1.8.2
